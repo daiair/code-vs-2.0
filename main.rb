@@ -1,21 +1,19 @@
 #CODE VS 2.0
 #Test code
 
-params = STDIN.gets.split(" ") 
-open("log.txt", "a") {|f|
-  f.write Time.now.to_s + "\n"
-  f.write "W: #{params[0]}, H: #{params[1]}, T: #{params[2]}, S: #{params[3]}, N: #{params[4]}\n"
-}
+require "logger"
 
-blocks = []
-blocks[0] = []
-i = 0
-j = 0
+log = Logger.new "#{File.dirname(File.expand_path __FILE__)}/log.txt"
+log.level = Logger::INFO
+
+params = STDIN.gets.split(" ") 
+log.info "W: #{params[0]}, H: #{params[1]}, T: #{params[2]}, S: #{params[3]}, N: #{params[4]}"
+
+blocks = Array.new([[]])
+i,j = 0,0
 while line = STDIN.gets
   if /END/ =~ line
-    open("log.txt","a") do |f|
-      f.write blocks[i].to_s + "\n"
-    end
+    log.info blocks[i].to_s
     i += 1
     break if i == params[4].to_i
     blocks[i] = []
@@ -31,4 +29,3 @@ puts "0 0"
 while true
   puts "1 0"
 end
-
